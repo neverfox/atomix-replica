@@ -5,6 +5,9 @@
                  [im.chit/hara.component "2.2.17"]
                  [io.atomix/atomix-all "1.0.0-rc4"]
                  [org.clojure/clojure "1.8.0"]]
-  :profiles {:uberjar {:aot :all}
+  :main ^:skip-aot atomix-playground.core
+  :target-path "target/%s"
+  :profiles {:uberjar {:aot :all
+                       :uberjar-name "atomix-playground-standalone.jar"}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
                    :source-paths ["env/dev" "src"]}})

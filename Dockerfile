@@ -1,13 +1,11 @@
-FROM phusion/baseimage
+FROM 311873742948.dkr.ecr.us-east-1.amazonaws.com/demandsignals/baseimage-jvm
 
-RUN apt-get update
-RUN apt-get -y -q install software-properties-common
-RUN add-apt-repository ppa:webupd8team/java -y
-RUN apt-get -y -q update
-RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
-RUN apt-get install -qqy oracle-java8-installer oracle-java8-set-default wget
-RUN rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/oracle-jdk8-installer
+RUN cd / && git clone -b develop http://github.com/neverfox/atomix-playground /atomix
 
-RUN mkdir -p /atomix/logs && cd /atomix && wget -O atomix-standalone-server.jar http://search.maven.org/remotecontent?filepath=io/atomix/atomix-standalone-server/1.0.0-rc4/atomix-standalone-server-1.0.0-rc4-shaded.jar
+ENV PORT=5000
+ENV MODE=bootstrap
 
-VOLUME /atomix/logs
+EXPOSE 5000
+
+WORKDIR /atomix
+ENTRYPOINT ["/usr/bin/lein", "run"]

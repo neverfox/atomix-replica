@@ -16,5 +16,7 @@
 
 (defn -main
   [& args]
-  (start (system {:replica {:port (env :port)}}))
+  (start (system {:replica {:port  (read-string (env :port))
+                            :mode  (keyword (env :mode))
+                            :nodes (if (env :nodes) (clojure.string/split (env :nodes) #","))}}))
   @(promise))

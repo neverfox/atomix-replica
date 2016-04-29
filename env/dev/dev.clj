@@ -5,10 +5,14 @@
 
 (def system nil)
 
+(def default-config {:replica {:port 5000
+                               :mode :bootstrap}})
+
 (defn init!
   "Constructs the system."
-  [runtime-config]
-  (alter-var-root #'system (constantly (system/system runtime-config))))
+  ([] (init! default-config))
+  ([runtime-config]
+   (alter-var-root #'system (constantly (system/system runtime-config)))))
 
 (defn start!
   "Starts the system."
@@ -22,9 +26,10 @@
 
 (defn go!
   "Initializes the system and starts it running."
-  [runtime-config]
-  (init! runtime-config)
-  (start!))
+  ([] (go! default-config))
+  ([runtime-config]
+   (init! runtime-config)
+   (start!)))
 
 (defn restart!
   "Stops the system, reloads modified source files, and restarts it."
