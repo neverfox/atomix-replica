@@ -7,8 +7,8 @@
 
 (defn init!
   "Constructs the system."
-  []
-  (alter-var-root #'system (constantly system/system)))
+  [runtime-config]
+  (alter-var-root #'system (constantly (system/system runtime-config))))
 
 (defn start!
   "Starts the system."
@@ -22,8 +22,8 @@
 
 (defn go!
   "Initializes the system and starts it running."
-  []
-  (init!)
+  [runtime-config]
+  (init! runtime-config)
   (start!))
 
 (defn restart!

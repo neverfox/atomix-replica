@@ -9,7 +9,7 @@
 
 (defrecord Replica []
   IComponent
-  (-start [{:keys [port] :as self}]
+  (-start [{:keys [port nodes] :as self}]
     (let [localhost (-> (InetAddress/getLocalHost)
                         (.getHostName))
           local-address (Address. localhost port)
@@ -19,7 +19,9 @@
                       (withTransport transport)
                       (withStorage storage)
                       build)]
-      @(.bootstrap replica)
+      (if nodes
+        @(.join replica (map #(Address. %) nodes))
+        @(.bootstrap replica))
       (assoc self :replica replica)))
   (-stop [{:keys [replica] :as self}]
     @(.shutdown replica)

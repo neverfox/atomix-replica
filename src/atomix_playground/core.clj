@@ -1,16 +1,14 @@
 (ns atomix-playground.core
   (:require
    [atomix-playground.replica :refer [map->Replica]]
-   [hara.component :as component]
-   [trinity.core :as trinity])
-  (:import
-   [io.atomix AtomixClient AtomixReplica]
-   [io.atomix.catalyst.transport Address NettyTransport])
+   [environ.core :refer [env]]
+   [hara.component :as component])
   (:gen-class))
 
-(def system (component/system
-             {:replica [map->Replica]}
-             {:replica {:port 5000}}))
+(defn system [runtime-config]
+  (component/system
+   {:replica [map->Replica]}
+   runtime-config))
 
 (def start component/start)
 
@@ -18,5 +16,5 @@
 
 (defn -main
   [& args]
-  (start)
+  (start (system {:replica {:port (env :port)}}))
   @(promise))
