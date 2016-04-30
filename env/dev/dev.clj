@@ -6,7 +6,8 @@
 (def system nil)
 
 (def default-config {:replica {:port 5000
-                               :mode :bootstrap}})
+                               :mode :bootstrap}
+                     :storage {:level :disk}})
 
 (defn init!
   "Constructs the system."
