@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
   :dependencies [[beckon "0.1.1"]
                  [environ "1.0.2"]
+                 [com.fzakaria/slf4j-timbre "0.3.1"]
                  [com.taoensso/timbre "4.3.1"]
                  [im.chit/hara.component "2.2.17"]
                  [io.atomix/atomix-all "1.0.0-rc4"]
