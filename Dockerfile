@@ -1,11 +1,13 @@
-FROM 311873742948.dkr.ecr.us-east-1.amazonaws.com/demandsignals/baseimage-jvm
+FROM clojure:alpine
 
-RUN cd / && git clone -b develop http://github.com/neverfox/atomix-playground /atomix
+RUN mkdir /atomix
+COPY target/uberjar/atomix-playground-standalone.jar /atomix
+
+WORKDIR /atomix
 
 ENV PORT=5000
 ENV MODE=bootstrap
 
 EXPOSE 5000
 
-WORKDIR /atomix
-ENTRYPOINT ["/usr/bin/lein", "run"]
+ENTRYPOINT ["java", "-jar", "atomix-playground-standalone.jar"]
