@@ -32,7 +32,8 @@
 
 (defn -main
   [& args]
-  (start (system {:replica {:port  (read-string (env :port))
+  (start (system {:replica {:host  (env :host)
+                            :port  (read-string (env :port))
                             :mode  (keyword (env :mode))
                             :nodes (if (env :nodes) (clojure.string/split (env :nodes) #","))}
                   :storage {:level :disk}}))

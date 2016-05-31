@@ -4,7 +4,8 @@
    [taoensso.timbre :refer [refer-timbre]])
   (:import
    [io.atomix AtomixReplica]
-   [io.atomix.catalyst.transport Address NettyTransport]
+   [io.atomix.catalyst.transport Address]
+   [io.atomix.catalyst.transport.netty NettyTransport]
    [io.atomix.copycat.server.storage Storage]
    [java.net InetAddress]))
 
@@ -12,11 +13,11 @@
 
 (defrecord ReplicaComponent []
   IComponent
-  (-start [{:keys [port mode nodes] :as self}]
+  (-start [{:keys [host port mode nodes] :as self}]
     (info "-> Starting replica")
     (let [localhost     (-> (InetAddress/getLocalHost)
-                            (.getHostName))
-          local-address (Address. localhost port)
+                            (.getHostAddress))
+          local-address (Address. host port)
           storage       (get-in self [:storage :storage] (Storage.))
           transport     (get-in self [:transport :transport] (NettyTransport.))
           replica       (.. (AtomixReplica/builder local-address)

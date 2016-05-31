@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: atomix-standalone
+spec:
+  replicas: 1
+  selector:
+    name: atomix-standalone
+  template:
+    metadata:
+      labels:
+        name: atomix-standalone
+    spec:
+      containers:
+      - name: atomix-standalone
+        image: 311873742948.dkr.ecr.us-east-1.amazonaws.com/atomix:latest
+        ports:
+        - containerPort: 5000

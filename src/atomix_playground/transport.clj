@@ -3,7 +3,7 @@
    [hara.component :refer [IComponent]]
    [taoensso.timbre :refer [refer-timbre]])
   (import
-   [io.atomix.catalyst.transport NettyTransport]))
+   [io.atomix.catalyst.transport.netty NettyTransport]))
 
 (refer-timbre)
 
