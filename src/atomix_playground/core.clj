@@ -2,6 +2,7 @@
   (:require
    [beckon]
    [atomix-playground.replica :refer [map->ReplicaComponent]]
+   [atomix-playground.seed :refer [map->SeedComponent]]
    [atomix-playground.storage :refer [map->StorageComponent]]
    [atomix-playground.transport :refer [map->TransportComponent]]
    [environ.core :refer [env]]
@@ -13,9 +14,11 @@
 
 (defn system [runtime-config]
   (component/system
-   {:replica [map->ReplicaComponent :storage :transport]
-    :storage [map->StorageComponent]
-    :transport [map->TransportComponent]}
+   {:replica   [map->ReplicaComponent :storage :transport :cluster]
+    :storage   [map->StorageComponent]
+    :transport [map->TransportComponent]
+    :seed      [map->SeedComponent]
+    :cluster   [{:expose [:cluster]} :seed]}
    runtime-config))
 
 (defn stop [system]
@@ -32,9 +35,9 @@
 
 (defn -main
   [& args]
-  (start (system {:replica {:host  (env :host)
-                            :port  (read-string (env :port))
-                            :mode  (keyword (env :mode))
-                            :nodes (if (env :nodes) (clojure.string/split (env :nodes) #","))}
-                  :storage {:level :disk}}))
+  (start (system {:replica {:host (env :host)
+                            :port (read-string (env :port))
+                            :mode (keyword (env :mode))}
+                  :storage {:level :disk}
+                  :seed    {:provider (keyword (env :provider))}}))
   @(promise))

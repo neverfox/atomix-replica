@@ -13,22 +13,21 @@
 
 (defrecord ReplicaComponent []
   IComponent
-  (-start [{:keys [host port mode nodes] :as self}]
+  (-start [{:keys [host port mode cluster] :as self}]
     (info "-> Starting replica")
     (let [localhost     (-> (InetAddress/getLocalHost)
                             (.getHostAddress))
-          local-address (Address. host port)
+          local-address (Address. (or host localhost) port)
           storage       (get-in self [:storage :storage] (Storage.))
           transport     (get-in self [:transport :transport] (NettyTransport.))
           replica       (.. (AtomixReplica/builder local-address)
                             (withTransport transport)
                             (withStorage storage)
                             build)]
-      (if nodes
-        (let [cluster (map #(Address. %) nodes)]
-          (condp = mode
-            :bootstrap @(.bootstrap replica cluster)
-            :join      @(.join replica cluster)))
+      (if cluster
+        (condp = mode
+          :bootstrap @(.bootstrap replica cluster)
+          :join      @(.join replica cluster))
         @(.bootstrap replica))
       (assoc self :replica replica)))
   (-stop [{:keys [replica] :as self}]

@@ -7,7 +7,9 @@
                  [com.taoensso/timbre "4.3.1"]
                  [im.chit/hara.component "2.3.6"]
                  [io.atomix/atomix-all "1.0.0-rc7"]
-                 [org.clojure/clojure "1.8.0"]]
+                 [kubernetes-api "0.1.0"]
+                 [org.clojure/clojure "1.8.0"]
+                 [org.clojure/core.async "0.2.374"]]
   :main ^:skip-aot atomix-playground.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
