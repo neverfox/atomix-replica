@@ -1,7 +1,7 @@
 (ns atomix-playground.replica
   (:require
-   [hara.component :refer [IComponent]]
-   [taoensso.timbre :refer [refer-timbre]])
+   [clojure.tools.logging :as log]
+   [hara.component :refer [IComponent]])
   (:import
    [io.atomix AtomixReplica]
    [io.atomix.catalyst.transport Address]
@@ -9,12 +9,10 @@
    [io.atomix.copycat.server.storage Storage]
    [java.net InetAddress]))
 
-(refer-timbre)
-
 (defrecord ReplicaComponent []
   IComponent
   (-start [{:keys [host port mode cluster] :as self}]
-    (info "-> Starting replica")
+    (log/info "-> Starting replica")
     (let [localhost     (-> (InetAddress/getLocalHost)
                             (.getHostAddress))
           local-address (Address. (or host localhost) port)
@@ -31,6 +29,6 @@
         @(.bootstrap replica))
       (assoc self :replica replica)))
   (-stop [{:keys [replica] :as self}]
-    (info "<- Stopping replica")
+    (log/info "<- Stopping replica")
     @(.leave replica)
     (dissoc self :replica)))

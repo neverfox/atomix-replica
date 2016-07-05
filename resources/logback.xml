@@ -6,6 +6,7 @@
   </appender>
 
   <logger name="io.atomix" level="INFO" />
+  <logger name="io.netty" level="INFO" />
 
   <root level="INFO">
     <appender-ref ref="${log_appender:-STDOUT}"/>

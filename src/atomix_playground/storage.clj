@@ -1,12 +1,10 @@
 (ns atomix-playground.storage
   (:require
-   [hara.component :refer [IComponent]]
-   [taoensso.timbre :refer [refer-timbre]])
+   [clojure.tools.logging :as log]
+   [hara.component :refer [IComponent]])
   (import
    [io.atomix.copycat.server.storage Storage StorageCleaner StorageLevel]
    [java.util UUID]))
-
-(refer-timbre)
 
 (defmulti build-storage :level :default :disk)
 
@@ -23,10 +21,10 @@
 (defrecord StorageComponent []
   IComponent
   (-start [self]
-    (info "-> Starting storage")
+    (log/info "-> Starting storage")
     (assoc self :storage (build-storage self)))
   (-stop [{:keys [storage] :as self}]
-    (info "<- Stopping storage")
+    (log/info "<- Stopping storage")
     (.. (StorageCleaner. storage)
         (cleanFiles (reify java.util.function.Predicate
                       (test [this f] true))))
