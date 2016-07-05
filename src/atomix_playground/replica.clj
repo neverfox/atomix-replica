@@ -32,6 +32,5 @@
       (assoc self :replica replica)))
   (-stop [{:keys [replica] :as self}]
     (info "<- Stopping replica")
-    @(.shutdown replica)
     @(.leave replica)
     (dissoc self :replica)))
