@@ -28,21 +28,22 @@
 
 (defmethod get-nodes :k8s
   [{:keys [ctx]}]
-  (let [endpoints (k8s/read-namespaced-endpoints ctx {:namespace "default" :name "atomix"})
+  (let [endpoints (<!! (k8s/read-namespaced-endpoints ctx {:namespace "default" :name "atomix"}))
         hosts (->> endpoints :subsets first :addresses (map :ip))
-        port (->> endpoints :ports (filter (= :name "netty")) first :port)]
+        port (->> endpoints :subsets first :ports (filter #(= "netty" (:name %))) first :port)]
+    (info ctx)
+    (info endpoints)
     (mapv #(Address. % port) hosts)))
 
 (defrecord SeedComponent []
   IComponent
   (-start [{:keys [provider] :as self}]
     (info "-> Starting seed provider")
-    (case provider
-      :k8s (assoc self :ctx (k8s/make-context "http://localhost:8001"))
-      :default)
-    (let [cluster (get-nodes self)]
-      (info "Seeding with cluster" cluster)
-      (assoc self :cluster cluster)))
+    (as-> self this
+      (assoc this :ctx (case provider
+                         :k8s (k8s/make-context "http://localhost:8001")
+                         :default))
+      (assoc this :cluster (get-nodes this))))
   (-stop [{:keys [storage] :as self}]
     (info "<- Stopping seed provider")
     (dissoc self :cluster :ctx)))
