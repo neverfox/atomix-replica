@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: atomix-bootstrap
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: atomix
+        mode: bootstrap
+    spec:
+      containers:
+      - name: atomix
+        image: 311873742948.dkr.ecr.us-east-1.amazonaws.com/atomix:latest
+        env:
+          - name: HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PORT
+            value: "5000"
+          - name: MODE
+            value: "bootstrap"
+        ports:
+          - containerPort: 5000
