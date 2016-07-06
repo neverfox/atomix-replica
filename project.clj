@@ -1,4 +1,4 @@
-(defproject atomix-replica "0.2.0-SNAPSHOT"
+(defproject atomix-replica "0.2.0"
   :description "Atomix replica as a Clojure system"
   :url "https://github.com/neverfox/atomix-replica"
   :license {:name "Eclipse Public License"
