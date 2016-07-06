@@ -1,0 +1,7 @@
+{:replica {:host #or [#env HOST "localhost"]
+           :port #or [#env PORT "5000"]
+           :mode #or [#env MODE "bootstrap"]}
+ :storage {:level :disk}
+ :seed    {:provider      #env PROVIDER
+           :nodes         #env NODES
+           :k8s-namespace #env K8S_NAMESPACE}}

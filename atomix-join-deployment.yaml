@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: atomix
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: atomix
+        mode: join
+    spec:
+      volumes:
+        - name: logs
+          emptyDir: {}
+      containers:
+      - name: atomix
+        image: atomix:latest
+        env:
+          - name: HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PORT
+            value: "5000"
+          - name: MODE
+            value: "join"
+          - name: PROVIDER
+            value: "k8s"
+        ports:
+          - containerPort: 5000
+        volumeMounts:
+          - mountPath: /opt/atomix/logs
+            name: logs
+        resources:
+          limits:
+            cpu: 250m
+            memory: 2Gi
+          requests:
+            cpu: 250m
+            memory: 2Gi
+      - name: kubernetes-api
+        image: wernight/kubectl
+        command: ["kubectl", "proxy"]
+        ports:
+          - containerPort: 8001

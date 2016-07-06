@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: atomix-bootstrap
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: atomix
+        mode: bootstrap
+    spec:
+      volumes:
+        - name: logs
+          emptyDir: {}
+      containers:
+      - name: atomix
+        image: atomix:latest
+        env:
+          - name: HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: PORT
+            value: "5000"
+          - name: MODE
+            value: "bootstrap"
+        ports:
+          - containerPort: 5000
+        volumeMounts:
+          - mountPath: /opt/atomix/logs
+            name: logs
