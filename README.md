@@ -1,36 +1,36 @@
-# atomix-playground
+# atomix-replica
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
+A standalone Atomix replica, implemented in Clojure, with Docker/Kubernetes support
 
 ## Usage
 
-FIXME: explanation
+REPL:
 
-    $ java -jar atomix-playground-0.1.0-standalone.jar [args]
+    user> (dev)
+    dev> (go!)
+    dev> (restart!)
+    dev> (stop!)
 
-## Options
+Standalone:
 
-FIXME: listing of options this app accepts.
+    $ docker build -t atomix .
+    $ docker run -d atomix
 
-## Examples
+Sample cluster (assumes [DNSDock](https://github.com/tonistiigi/dnsdock)):
 
-...
+    $ docker-compose up
+    
+Kubernetes:
 
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+    $ kubectl create -f atomix-service.yaml
+    $ kubectl create -f atomix-bootstrap-deployment.yaml
+    $ kubectl create -f atomix-join-deployment.yaml
+    $ kubectl scale --replicas=3 -f atomix-join-deployment.yaml
+    $ kubectl delete -f atomix-bootstrap-deployment.yaml
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Roman Pearah
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

@@ -1,4 +1,4 @@
-(ns atomix-playground.transport
+(ns atomix-replica.transport
   (:require
    [clojure.tools.logging :as log]
    [hara.component :refer [IComponent]])

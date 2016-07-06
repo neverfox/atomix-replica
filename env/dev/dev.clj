@@ -1,6 +1,6 @@
 (ns dev
   (:require
-   [atomix-playground.core :as system]
+   [atomix-replica.core :as system]
    [clojure.tools.namespace.repl :refer [refresh]]))
 
 (def system nil)

@@ -1,4 +1,4 @@
-(ns atomix-playground.replica
+(ns atomix-replica.replica
   (:require
    [clojure.tools.logging :as log]
    [hara.component :refer [IComponent]])

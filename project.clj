@@ -1,6 +1,8 @@
-(defproject atomix-playground "0.1.0-SNAPSHOT"
-  :description "Atomix Replica System"
-  :url "http://example.com/FIXME"
+(defproject atomix-replica "0.1.0-SNAPSHOT"
+  :description "Atomix replica as a Clojure system"
+  :url "https://github.com/neverfox/atomix-replica"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[aero "1.0.0-beta5"]
                  [beckon "0.1.1"]
                  [ch.qos.logback/logback-classic "1.1.7"]
@@ -12,9 +14,10 @@
                  [org.clojure/core.async "0.2.385"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.slf4j/slf4j-api "1.7.21"]]
-  :main ^:skip-aot atomix-playground.core
+  :main ^:skip-aot atomix-replica.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all
-                       :uberjar-name "atomix-playground-standalone.jar"}
-             :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
-                   :source-paths ["env/dev" "src"]}})
+  :repl-options {:init-ns user}
+  :profiles {:uberjar {:aot          :all
+                       :uberjar-name "replica.jar"}
+             :dev     {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
+                       :source-paths ["env/dev" "src"]}})
