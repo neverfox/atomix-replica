@@ -10,9 +10,12 @@ spec:
         app: atomix
         mode: join
     spec:
+      volumes:
+        - name: logs
+          emptyDir: {}
       containers:
       - name: atomix
-        image: 311873742948.dkr.ecr.us-east-1.amazonaws.com/atomix:latest
+        image: atomix:latest
         env:
           - name: HOST
             valueFrom:
@@ -24,10 +27,11 @@ spec:
             value: "join"
           - name: PROVIDER
             value: "k8s"
-          - name: _JAVA_OPTIONS
-            value: "-Xms2G -Xmx2G"
         ports:
           - containerPort: 5000
+        volumeMounts:
+          - mountPath: /opt/atomix/logs
+            name: logs
         resources:
           limits:
             cpu: 250m

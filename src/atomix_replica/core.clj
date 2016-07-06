@@ -1,15 +1,15 @@
-(ns atomix-playground.core
+(ns atomix-replica.core
+  (:gen-class)
   (:require
    [aero.core :refer [read-config]]
-   [atomix-playground.replica :refer [map->ReplicaComponent]]
-   [atomix-playground.seed :refer [map->SeedComponent]]
-   [atomix-playground.storage :refer [map->StorageComponent]]
-   [atomix-playground.transport :refer [map->TransportComponent]]
+   [atomix-replica.replica :refer [map->ReplicaComponent]]
+   [atomix-replica.seed :refer [map->SeedComponent]]
+   [atomix-replica.storage :refer [map->StorageComponent]]
+   [atomix-replica.transport :refer [map->TransportComponent]]
    [beckon]
    [clojure.java.io :as io]
    [clojure.tools.logging :as log]
-   [hara.component :as component])
-  (:gen-class))
+   [hara.component :as component]))
 
 (defn system [runtime-config]
   (component/system

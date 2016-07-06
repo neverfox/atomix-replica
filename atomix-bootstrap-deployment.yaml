@@ -10,9 +10,12 @@ spec:
         app: atomix
         mode: bootstrap
     spec:
+      volumes:
+        - name: logs
+          emptyDir: {}
       containers:
       - name: atomix
-        image: 311873742948.dkr.ecr.us-east-1.amazonaws.com/atomix:latest
+        image: atomix:latest
         env:
           - name: HOST
             valueFrom:
@@ -24,3 +27,6 @@ spec:
             value: "bootstrap"
         ports:
           - containerPort: 5000
+        volumeMounts:
+          - mountPath: /opt/atomix/logs
+            name: logs
