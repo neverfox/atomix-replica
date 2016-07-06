@@ -15,7 +15,7 @@
     (log/info "-> Starting replica")
     (let [localhost     (-> (InetAddress/getLocalHost)
                             (.getHostAddress))
-          local-address (Address. (or host localhost) (read-string port))
+          local-address (Address. (or host localhost) port)
           storage       (get-in self [:storage :storage] (Storage.))
           transport     (get-in self [:transport :transport] (NettyTransport.))
           replica       (.. (AtomixReplica/builder local-address)
