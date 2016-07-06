@@ -34,5 +34,10 @@
 
 (defn -main
   [& args]
-  (start (system (read-config (io/resource "config.edn"))))
+  (start (system (-> "config.edn"
+                     io/resource
+                     read-config
+                     (update-in [:replica :port] read-string)
+                     (update-in [:replica :mode] keyword)
+                     (update-in [:seed :provider] keyword))))
   @(promise))

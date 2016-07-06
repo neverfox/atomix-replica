@@ -1,13 +1,19 @@
 (ns dev
   (:require
+   [aero.core :refer [read-config]]
    [atomix-replica.core :as system]
-   [clojure.tools.namespace.repl :refer [refresh]]))
+   [clojure.tools.namespace.repl :refer [refresh]]
+   [clojure.java.io :as io]))
 
 (def system nil)
 
-(def default-config {:replica {:port 5000
-                               :mode :bootstrap}
-                     :storage {:level :disk}})
+(def default-config
+  (-> "config.edn"
+      io/resource
+      read-config
+      (update-in [:replica :port] read-string)
+      (update-in [:replica :mode] keyword)
+      (update-in [:seed :provider] keyword)))
 
 (defn init!
   "Constructs the system."
