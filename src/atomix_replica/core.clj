@@ -39,5 +39,6 @@
                      read-config
                      (update-in [:replica :port] read-string)
                      (update-in [:replica :mode] keyword)
+                     (update-in [:replica :session-timeout] read-string)
                      (update-in [:seed :provider] keyword))))
   @(promise))

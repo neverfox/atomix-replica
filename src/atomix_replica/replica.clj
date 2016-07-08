@@ -7,11 +7,12 @@
    [io.atomix.catalyst.transport Address]
    [io.atomix.catalyst.transport.netty NettyTransport]
    [io.atomix.copycat.server.storage Storage]
-   [java.net InetAddress]))
+   [java.net InetAddress]
+   [java.time Duration]))
 
 (defrecord ReplicaComponent []
   IComponent
-  (-start [{:keys [host port mode cluster] :as self}]
+  (-start [{:keys [host port mode cluster session-timeout] :as self}]
     (log/info "-> Starting replica")
     (let [localhost     (-> (InetAddress/getLocalHost)
                             (.getHostAddress))
@@ -21,6 +22,7 @@
           replica       (.. (AtomixReplica/builder local-address)
                             (withTransport transport)
                             (withStorage storage)
+                            (withSessionTimeout (Duration/ofMillis session-timeout))
                             build)]
       (if cluster
         (condp = mode
